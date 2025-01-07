@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODIGOS NETFLIX (DOMINIOS GADAFA)</title>
+    <!-- Vinculación del CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>CODIGOS NETFLIX (@GADAFA)</h1>
+        <form method="POST" action="/" onsubmit="mostrarSpinner()">
+            <label for="correo_cliente">Correo del Cliente:</label>
+            <input type="email" name="correo_cliente" id="correo_cliente" placeholder="Ingrese el correo" required>
+            <button type="submit">🔍 Buscar</button>
+        </form>
+
+        <!-- Spinner para mostrar mientras se procesa la solicitud -->
+        <div id="loading" style="display: none; text-align: center; margin-top: 20px;">
+            <img src="https://i.gifer.com/ZZ5H.gif" alt="Cargando...">
+            <p>Procesando solicitud...</p>
+        </div>
+
+        <div class="correos">
+            {% if correos %}
+                {% for correo in correos %}
+                    <div class="correo">
+                        <h3>{{ correo.asunto }}</h3>
+                        <p><strong>De:</strong> {{ correo.remitente }}</p>
+                        <div class="contenido">
+                            {{ correo.contenido|safe }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="text-align: center; color: #555;">No se encontraron correos para la dirección proporcionada.</p>
+            {% endif %}
+        </div>
+
+        <!-- Pasos a seguir -->
+        <div class="timeline">
+            <h1>Pasos a Seguir</h1>
+            <div class="step">
+                <div class="marker">1</div>
+                <div class="content">
+                    <h3>Solicitar el código:</h3>
+                    <p>Pide el código para iniciar sesión o restablecer la contraseña en Netflix y espera un minuto para recibirlo.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="marker">2</div>
+                <div class="content">
+                    <h3>Busca el correo:</h3>
+                    <p>Introduce el correo en el buscador y darle en buscar.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="marker">3</div>
+                <div class="content">
+                    <h3>Verifica:</h3>
+                    <p>Confirma que la fecha y hora del correo coincidan con tu solicitud.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="marker">4</div>
+                <div class="content">
+                    <h3>Reintenta si es necesario:</h3>
+                    <p>Si el código no aparece o no es correcto, vuelve a buscar nuevamente.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="note">
+            Nota: Está estrictamente prohibido cambiar los correos asociados a las cuentas. Evita sanciones, reportes negativos y garantiza la seguridad de las cuentas.
+        </div>
+    </div>
+    <script>
+        function mostrarSpinner() {
+            document.getElementById('loading').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
