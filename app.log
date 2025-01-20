@@ -1,0 +1,24 @@
+2025-01-20 12:29:26,776 - engineio.server - ERROR - The client is using an unsupported version of the Socket.IO or Engine.IO protocols (further occurrences of this error will be logged with level INFO)
+2025-01-20 12:29:41,509 - __main__ - ERROR - Error no manejado: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-01-20 12:29:46,113 - __main__ - ERROR - Error no manejado: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-01-20 12:30:10,939 - __main__ - ERROR - Error no manejado: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-01-20 12:33:08,490 - engineio.server - ERROR - The client is using an unsupported version of the Socket.IO or Engine.IO protocols (further occurrences of this error will be logged with level INFO)
+2025-01-20 12:33:16,684 - __main__ - ERROR - Error no manejado: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-01-20 12:33:32,274 - __main__ - ERROR - Error no manejado: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-01-20 12:43:47,580 - engineio.server - ERROR - The client is using an unsupported version of the Socket.IO or Engine.IO protocols (further occurrences of this error will be logged with level INFO)
+2025-01-20 12:44:17,275 - __main__ - ERROR - Error no manejado: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-01-20 12:44:35,073 - __main__ - ERROR - Error no manejado: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-01-20 12:45:08,863 - __main__ - ERROR - Error no manejado: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-01-20 12:45:25,566 - __main__ - ERROR - Error no manejado: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-01-20 14:46:43,532 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-01-20 14:46:43] "GET / HTTP/1.1" 200 1716 0.006560
+2025-01-20 14:46:43,600 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-01-20 14:46:43] "GET /static/styles.css?v=1737402403 HTTP/1.1" 200 9846 0.040788
+2025-01-20 14:50:31,564 - __main__ - ERROR - Error no manejado: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-01-20 14:50:31,565 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-01-20 14:50:31] "POST /remove-session HTTP/1.1" 500 163 0.001792
+2025-01-20 14:50:34,597 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-01-20 14:50:34] "GET / HTTP/1.1" 200 1716 0.005560
+2025-01-20 14:50:34,671 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-01-20 14:50:34] "GET /static/styles.css?v=1737402634 HTTP/1.1" 200 9846 0.043310
+2025-01-20 14:50:43,894 - __main__ - ERROR - Error no manejado: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-01-20 14:50:43,894 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-01-20 14:50:43] "POST /remove-session HTTP/1.1" 500 163 0.000614
+2025-01-20 15:02:01,039 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-01-20 15:02:01] "GET / HTTP/1.1" 200 1716 0.006471
+2025-01-20 15:02:01,111 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-01-20 15:02:01] "GET /static/styles.css?v=1737403321 HTTP/1.1" 200 9846 0.044050
+2025-01-20 15:02:10,405 - __main__ - ERROR - Error no manejado: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-01-20 15:02:10,405 - geventwebsocket.handler - INFO - 127.0.0.1 - - [2025-01-20 15:02:10] "POST /remove-session HTTP/1.1" 500 163 0.001222

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Verifica si ya existe una cookie llamada "unique_id"
+        if (!document.cookie.split('; ').find(row => row.startsWith('unique_id'))) {
+            // Genera un identificador único
+            const uniqueId = crypto.randomUUID();
+            // Almacena el identificador en una cookie
+            document.cookie = `unique_id=${uniqueId}; path=/; SameSite=Strict; max-age=${60 * 60 * 24 * 365}`;
+        }
+    </script>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script> <!-- Agregado -->
+    <title>Búsqueda de Correos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}?v={{ time() }}">
+</head>
+<body>
+    <div class="container">
+        {% if is_admin %}
+        <div class="admin-buttons top-right">
+            <a href="{{ url_for('admin_panel') }}" class="button">Volver al Panel de Administración</a>
+        </div>
+        {% endif %}
+        <h1>Búsqueda de Correos</h1>
+
+        <form method="POST" action="/app" onsubmit="mostrarSpinner()">
+            <div class="form-group">
+                <label for="correo_cliente">Correo del Cliente:</label>
+                <input type="email" name="correo_cliente" id="correo_cliente" placeholder="Ingrese el correo" required>
+            </div>
+            <button type="submit" class="btn-search">🔍 Buscar</button>
+        </form>
+
+        <div id="loading" style="display: none; text-align: center; margin-top: 20px;">
+            <img src="https://i.gifer.com/ZZ5H.gif" alt="Cargando..." width="50">
+            <p>Procesando solicitud...</p>
+        </div>
+
+        <div class="correos">
+    {% if correos %}
+        {% for correo in correos %}
+ <div class="correo">
+    <h3 style="color: #2c3e50; font-weight: bold;">{{ correo.asunto }}</h3>
+    <p><strong>De:</strong> {{ correo.remitente }}</p>
+    <p><strong>Fecha:</strong> {{ correo.fecha }}</p>
+    <div class="contenido">
+        {{ correo.contenido|safe }}
+    </div>
+</div>
+<hr style="margin: 15px 0; border: none; border-top: 1px solid #e0e0e0;">
+        {% endfor %}
+    {% else %}
+        <p>No se encontraron correos para la dirección proporcionada.</p>
+    {% endif %}
+</div>
+        <div class="timeline">
+            <h2>Pasos a Seguir</h2>
+            <div class="step">
+                <div class="circle">1</div>
+                <div class="details">
+                    <h3>Solicitar el código:</h3>
+                    <p>Pide el código para iniciar sesión o restablecer la contraseña en Netflix y espera un minuto para recibirlo.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="circle">2</div>
+                <div class="details">
+                    <h3>Busca el correo:</h3>
+                    <p>Introduce el correo en el buscador y dale en buscar.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="circle">3</div>
+                <div class="details">
+                    <h3>Verifica:</h3>
+                    <p>Confirma que la fecha y hora del correo coincidan con tu solicitud.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="circle">4</div>
+                <div class="details">
+                    <h3>Reintenta si es necesario:</h3>
+                    <p>Si el código no aparece o no es correcto, vuelve a buscar nuevamente.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="note">
+            <p>Nota: Está estrictamente prohibido cambiar los correos asociados a las cuentas. Evita sanciones, reportes negativos y garantiza la seguridad de las cuentas.</p>
+        </div> <!-- Fin del contenedor principal -->
+    </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const socket = io();
+
+            // Escuchar el evento de forzar cierre de sesión
+            socket.on("forzar_cierre_sesion", (data) => {
+                const uniqueId = document.cookie.split("; ").find(row => row.startsWith("unique_id"))?.split("=")[1];
+                const fingerprint = `${navigator.userAgent}_${uniqueId}`;
+
+                if (data.fingerprint === fingerprint) {
+                    alert("Su sesión ha sido cerrada o su dispositivo ha sido bloqueado por el administrador.");
+                    window.location.href = "/";
+                }
+            });
+
+            // Verificación periódica del estado de la sesión
+            setInterval(() => {
+                const uniqueId = document.cookie.split("; ").find(row => row.startsWith("unique_id"))?.split("=")[1];
+                const fingerprint = `${navigator.userAgent}_${uniqueId}`;
+
+                fetch("/api/check_session_status", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ fingerprint })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "blocked" || data.status === "closed") {
+                        alert("Su sesión ya no es válida.");
+                        window.location.href = "/";
+                    }
+                })
+                .catch(error => console.error("Error al verificar el estado de la sesión:", error));
+            }, 5000); // Verifica cada 5 segundos
+        </script>
+
+
+</body>
+</html>

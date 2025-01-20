@@ -1,0 +1,30 @@
+{
+    "127.0.0.1_Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0_8a889366-df6c-4429-aaae-918a42ea1397": {
+        "intentos": 0,
+        "bloqueo": null
+    },
+    "127.0.0.1_Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0_unknown_id": {
+        "intentos": 0,
+        "bloqueo": null
+    },
+    "127.0.0.1_Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0_30d71792-364e-4036-8754-615ca7af14cd": {
+        "intentos": 0,
+        "bloqueo": null
+    },
+    "127.0.0.1_Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0_unknown_id": {
+        "intentos": 0,
+        "bloqueo": null
+    },
+    "127.0.0.1_Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36_96206cee-f879-4f5a-b773-d70df0957444": {
+        "intentos": 0,
+        "bloqueo": null
+    },
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0_30d71792-364e-4036-8754-615ca7af14cd": {
+        "intentos": 0,
+        "bloqueo": null
+    },
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36_96206cee-f879-4f5a-b773-d70df0957444": {
+        "intentos": 1,
+        "bloqueo": null
+    }
+}

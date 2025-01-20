@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Verifica si ya existe una cookie llamada "unique_id"
+        if (!document.cookie.split('; ').find(row => row.startsWith('unique_id'))) {
+            // Genera un identificador único
+            const uniqueId = crypto.randomUUID();
+            // Almacena el identificador en una cookie
+            document.cookie = `unique_id=${uniqueId}; path=/; SameSite=Strict; max-age=${60 * 60 * 24 * 365}`;
+        }
+    </script>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script> <!-- Agregado -->
+    <title>Gestor de Contraseñas y Credenciales</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Botones superiores -->
+        <div class="admin-buttons">
+            <a href="{{ url_for('logout') }}" class="button">Cerrar Sesión</a>
+            {% if admin_access %}
+            <a href="{{ url_for('correo_app') }}" class="button">Ir a Correos</a>
+            {% endif %}
+        </div>
+
+        <!-- Formulario para actualizar credenciales -->
+        <h2>Actualizar Credenciales Administrativas</h2>
+        <form method="POST" action="/admin/panel">
+            <input type="hidden" name="action" value="actualizar_credenciales">
+            <label for="username">Nuevo Usuario:</label>
+            <input type="text" id="username" name="username" placeholder="Ingrese el nuevo usuario" required>
+
+            <label for="password-update">Nueva Contraseña:</label>
+            <input type="password" id="password-update" name="password" placeholder="Ingrese la nueva contraseña" required>
+
+            <button type="submit">Actualizar Credenciales</button>
+        </form>
+
+        <!-- Formulario para crear contraseñas -->
+        <h1>Gestor de Contraseñas Desechables</h1>
+        <form method="POST" action="/admin/panel">
+            <input type="hidden" name="action" value="crear">
+            <label for="password-create">Contraseña Base:</label>
+            <input type="text" id="password-create" name="password" placeholder="Ingrese la contraseña base" required>
+
+            <label for="duration">Duración:</label>
+            <select id="duration" name="duration">
+                <option value="hours">Horas</option>
+                <option value="days">Días</option>
+                <option value="months">Meses</option>
+                <option value="years">Años</option>
+            </select>
+
+            <label for="quantity">Cantidad:</label>
+            <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+
+            <button type="submit">Crear Contraseñas</button>
+        </form>
+
+        <!-- Tabla para gestionar contraseñas -->
+        <h2>Contraseñas Desechables</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Contraseña</th>
+                    <th>Expiración</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contraseña in contraseñas %}
+                <tr>
+                    <td>{{ contraseña.password }}</td>
+                    <td>{{ contraseña.expiracion }}</td>
+                    <td>{{ contraseña.estado }}</td>
+                    <td>
+                        <form method="POST" action="/admin/panel" style="display:inline;">
+                            <input type="hidden" name="password" value="{{ contraseña.password }}">
+                            <input type="hidden" name="action" value="activar">
+                            <button type="submit">Activar</button>
+                        </form>
+                        <form method="POST" action="/admin/panel" style="display:inline;">
+                            <input type="hidden" name="password" value="{{ contraseña.password }}">
+                            <input type="hidden" name="action" value="desactivar">
+                            <button type="submit">Desactivar</button>
+                        </form>
+                        <form method="POST" action="/admin/panel" style="display:inline;">
+                            <input type="hidden" name="password" value="{{ contraseña.password }}">
+                            <input type="hidden" name="action" value="eliminar">
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+        <h2>Sesiones Activas</h2>
+        <div class="table-container">
+            <table id="tabla-sesiones">
+                <thead>
+                    <tr>
+                        <th>Fingerprint</th>
+                        <th>Contraseña</th>
+                        <th>Hora de Inicio</th>
+                        <th>IP</th>
+                        <th>Agente de Usuario</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Las filas se generarán dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <!-- Tabla de dispositivos bloqueados -->
+        <h2>Dispositivos Bloqueados</h2>
+        <div class="table-container">
+            <table id="tabla-dispositivos">
+                <thead>
+                    <tr>
+                        <th>Fingerprint</th>
+                        <th>Fecha de Bloqueo</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Las filas se generarán dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+
+
+        <script>
+            function actualizarTabla(endpoint, tablaId, generarFila, key) {
+                fetch(endpoint)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+                        }
+                        const contentType = response.headers.get("content-type");
+                        if (!contentType || !contentType.includes("application/json")) {
+                            throw new Error(`La respuesta de la API no es JSON. Tipo de contenido: ${contentType}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const items = data[key];
+                        if (!Array.isArray(items)) {
+                            throw new Error(`El formato de datos para ${key} no es un array.`);
+                        }
+
+                        const tbody = document.querySelector(`#${tablaId} tbody`);
+                        tbody.innerHTML = ""; // Limpia las filas existentes
+
+                        items.forEach(item => {
+                            const fila = document.createElement("tr");
+                            fila.innerHTML = generarFila(item);
+                            tbody.appendChild(fila);
+                        });
+                    })
+                    .catch(error => console.error(`Error al actualizar la tabla ${tablaId}:`, error));
+            }
+
+            function generarFilaSesiones(item) {
+                return `
+                    <td>${item.fingerprint}</td>
+                    <td>${item.password}</td>
+                    <td>${item.login_time}</td>
+                    <td>${item.ip}</td>
+                    <td>${item.user_agent}</td>
+                    <td>
+                        <form method="POST" action="/admin/panel">
+                            <input type="hidden" name="action" value="cerrar_sesion">
+                            <input type="hidden" name="fingerprint" value="${item.fingerprint}">
+                            <button type="submit">Cerrar Sesión</button>
+                        </form>
+                        <form method="POST" action="/admin/panel">
+                            <input type="hidden" name="action" value="bloquear_dispositivo">
+                            <input type="hidden" name="fingerprint" value="${item.fingerprint}">
+                            <button type="submit">Bloquear</button>
+                        </form>
+                    </td>
+                `;
+            }
+
+            function generarFilaDispositivos(item) {
+                return `
+                    <td>${item.fingerprint}</td>
+                    <td>${item.bloqueo}</td>
+                    <td>
+                        <form method="POST" action="/admin/panel">
+                            <input type="hidden" name="action" value="desbloquear_dispositivo">
+                            <input type="hidden" name="fingerprint" value="${item.fingerprint}">
+                            <button type="submit">Desbloquear</button>
+                        </form>
+                    </td>
+                `;
+            }
+
+        </script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const socket = io();
+
+            // Escuchar el evento de forzar cierre de sesión
+            socket.on("forzar_cierre_sesion", (data) => {
+                const uniqueId = document.cookie.split("; ").find(row => row.startsWith("unique_id"))?.split("=")[1];
+                const fingerprint = `${navigator.userAgent}_${uniqueId}`;
+
+                if (data.fingerprint === fingerprint) {
+                    alert("Su sesión ha sido cerrada o su dispositivo ha sido bloqueado por el administrador.");
+                    window.location.href = "/";
+                }
+            });
+
+            // Verificación periódica del estado de la sesión
+            setInterval(() => {
+                const uniqueId = document.cookie.split("; ").find(row => row.startsWith("unique_id"))?.split("=")[1];
+                const fingerprint = `${navigator.userAgent}_${uniqueId}`;
+
+                fetch("/api/check_session_status", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ fingerprint })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "blocked" || data.status === "closed") {
+                        alert("Su sesión ya no es válida.");
+                        window.location.href = "/";
+                    }
+                })
+                .catch(error => console.error("Error al verificar el estado de la sesión:", error));
+            }, 5000); // Verifica cada 5 segundos
+        </script>
+
+        <script>
+            // Funciones para actualizar las tablas
+
+            setInterval(() => actualizarTabla('/api/sesiones_activas', 'tabla-sesiones', generarFilaSesiones, 'sesiones_activas'), 5000);
+            setInterval(() => actualizarTabla('/api/dispositivos_bloqueados', 'tabla-dispositivos', generarFilaDispositivos, 'dispositivos_bloqueados'), 5000);
+
+            document.addEventListener("DOMContentLoaded", () => {
+                actualizarTabla('/api/sesiones_activas', 'tabla-sesiones', generarFilaSesiones, 'sesiones_activas');
+                actualizarTabla('/api/dispositivos_bloqueados', 'tabla-dispositivos', generarFilaDispositivos, 'dispositivos_bloqueados');
+            });
+
+        </script>
+    </div> <!-- Cierre del div.container -->
+</body>
+</html>

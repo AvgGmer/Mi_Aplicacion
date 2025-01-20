@@ -3,90 +3,153 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    box-sizing: border-box;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 90%;
+    animation: fadeInContainer 1s ease-in-out;
 }
 
-h1 {
-    text-align: center;
-    font-size: 2.5rem;
+/* Botón en la esquina superior derecha (si aplica) */
+/* Botón en la esquina superior derecha dentro del recuadro */
+/* Botón en la esquina superior derecha dentro del recuadro */
+.top-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1; /* Asegura que el botón esté por encima del contenido */
+    margin: 0; /* Elimina cualquier margen adicional */
+}
+
+.admin-link {
+    text-decoration: none;
+    font-size: 14px;
+    color: white;
+    background: #007BFF;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.admin-link:hover {
+    background: #0056b3;
+    transform: scale(1.05); /* Añade un ligero efecto hover */
+}
+
+/* Asegura que el contenedor maneje adecuadamente el contenido */
+.container {
+    position: relative; /* Necesario para que .top-right funcione correctamente */
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: auto; /* Centra el contenedor */
+}
+
+
+/* Títulos */
+h1, h2 {
     color: #007BFF;
+    text-align: center;
     margin-bottom: 20px;
 }
 
-/* Estilo del formulario */
-form {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 30px;
+/* Formularios */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
 }
 
+label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input[type="text"],
+input[type="password"],
 input[type="email"] {
-    padding: 12px;
-    font-size: 16px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    flex: 1 1 300px;
-    border-radius: 8px;
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
     border: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    outline: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
 }
 
+input[type="text"]:focus,
+input[type="password"]:focus,
 input[type="email"]:focus {
     border-color: #007BFF;
-    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 button {
     padding: 12px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
     font-size: 16px;
-    border-radius: 8px;
+    color: white;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    flex: 1 1 auto;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
     background-color: #218838;
-    transform: scale(1.05);
 }
 
-/* Correos */
-.correos {
-    margin-top: 20px;
+/* Botón buscar */
+.btn-search {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.correo {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+.btn-search:hover {
+    background-color: #0056b3;
+}
+
+/* Resultados de correos */
+.correos .correo {
+    background: #f9f9f9;
+    border-radius: 5px;
     padding: 20px;
-    transition: all 0.3s ease;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.correo:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+.no-correos {
+    text-align: center;
+    color: #666;
+    font-style: italic;
 }
 
-/* Línea de tiempo */
+/* Pasos a seguir */
 .timeline {
-    margin: 40px 0;
+    margin-top: 40px;
 }
 
-.timeline h1 {
+.timeline h2 {
     font-size: 2rem;
     margin-bottom: 20px;
     color: #333;
@@ -95,93 +158,325 @@ button:hover {
 
 .step {
     display: flex;
-    align-items: center;
+    align-items: center; /* Centra el contenido verticalmente */
     margin-bottom: 20px;
-    flex-wrap: wrap;
+    gap: 15px;
 }
 
-.step .marker {
+.circle {
     flex-shrink: 0;
     background: #007BFF;
-    color: #fff;
-    width: 50px;
-    height: 50px;
+    color: white;
+    font-size: 16px;
+    width: 50px; /* Tamaño uniforme */
+    height: 50px; /* Tamaño uniforme */
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 1.5rem;
-    margin-right: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.step .content {
+.details {
     flex-grow: 1;
-    max-width: calc(100% - 70px);
+    background: #f9f9f9;
+    padding: 15px; /* Tamaño uniforme */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 70px; /* Altura mínima para simetría */
+    display: flex;
+    flex-direction: column; /* Alinea título y descripción */
+    justify-content: center;
 }
 
-.step .content h3 {
+.details h3 {
     font-size: 1.2rem;
-    margin: 0;
+    margin: 0 0 5px;
     color: #333;
 }
 
-.step .content p {
-    margin: 5px 0 0;
+.details p {
+    margin: 0;
     color: #555;
     line-height: 1.5;
 }
 
-/* Nota */
+/* Nota de advertencia */
 .note {
-    margin-top: 40px;
+    margin-top: 30px;
     padding: 15px;
     background: #f8d7da;
     color: #721c24;
     border-left: 5px solid #f5c6cb;
     border-radius: 8px;
     font-weight: bold;
+    text-align: center;
+}
+
+
+}
+
+/* Mensajes Flash */
+.flash-messages {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.flash-messages li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    color: white;
+    font-weight: bold;
+    text-align: left;
+}
+
+.flash-messages .danger {
+    background-color: #dc3545;
+}
+
+/* Animaciones */
+@keyframes fadeInContainer {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Responsividad */
 @media (max-width: 768px) {
     .container {
-        padding: 10px;
+        max-width: 95%;
     }
 
-    form {
+    .timeline .step {
         flex-direction: column;
-        align-items: stretch;
     }
 
-    input[type="email"] {
-        width: 100%;
-        margin-right: 0;
+    .circle {
+        margin-bottom: 10px;
     }
 
-    button {
-        width: 100%;
-        margin-top: 10px;
+    h1, h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        max-width: 900px;
     }
 
-    .step {
-        flex-direction: column;
-        align-items: flex-start;
+    h1, h2 {
+        font-size: 2.5rem;
     }
 
-    .step .marker {
-        margin-right: 10px;
+    .intro-text {
+        font-size: 1.2rem;
+    }
+}
+
+/* Estilo para centrar el botón desplegable */
+.dropdown-center {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Botón desplegable */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-btn:hover {
+    background-color: #0056b3;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 300px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Contraseñas Actuales */
+.password-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.password-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeInCard 0.5s ease-in-out;
+}
+
+.password-card strong {
+    color: #343a40;
+}
+
+.actions {
+    margin-top: 10px;
+}
+
+.actions .btn {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+@keyframes fadeInCard {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #b02a37;
+}
+
+.admin-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: flex-start;
+}
+
+.button {
+    text-decoration: none;
+    font-size: 14px;
+    color: white;
+    background: #007BFF;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+
+/* Ajuste responsivo para tablas */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Permitir scroll horizontal */
+    margin: 10px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Establece un ancho mínimo para evitar colapso */
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Estilo específico para pantallas pequeñas */
+@media (max-width: 768px) {
+    table {
+        display: block; /* Convierte la tabla en un bloque */
+        overflow-x: auto; /* Permite desplazamiento horizontal */
+        white-space: nowrap; /* Evita el ajuste de texto */
     }
 
-    .step .content {
-        max-width: 100%;
+    table th, table td {
+        padding: 8px;
+        font-size: 12px; /* Reduce el tamaño del texto */
     }
 
-    h1 {
-        font-size: 2rem;
-    }
-
-    .timeline h1 {
-        font-size: 1.8rem;
+    .table-container {
+        overflow-x: auto; /* Asegura el desplazamiento en contenedores pequeños */
     }
 }
